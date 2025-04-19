@@ -1,27 +1,10 @@
 // File name App.js
 import React from 'react';
 import { Text, View, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
-
-const Login = () => {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Login</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        keyboardType="email-address"
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Password"
-        secureTextEntry
-      />
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Login</Text>
-      </TouchableOpacity>
-    </View>
-  );
-};
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import MainScreen from './MainScreen';
+import Login from './LoginScreen';
 
 const styles = StyleSheet.create({
   container: {
@@ -61,10 +44,15 @@ const styles = StyleSheet.create({
   },
 });
 
+const Stack = createStackNavigator();
+
 export default function App() {
   return (
-    <View style={{ flex: 1 }}>
-      <Login />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Login">
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="MainScreen" component={MainScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
