@@ -1,4 +1,4 @@
-package com.react
+package com.anonymous.React
 
 import android.os.Build
 import android.os.Bundle

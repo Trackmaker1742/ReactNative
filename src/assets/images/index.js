@@ -1,0 +1,28 @@
+const images = {
+  logo: require('./logo.svg').default,
+  noImage: require('./no-image.png'),
+  phongKham: require('./services/phongkham.png'),
+  cosoyte: require('./services/cosoyte.png'),
+  baiTest: require('./services/baitest.png'),
+  khamTuXa: require('./services/khamtuxa.png'),
+  timMach: require('./specialties/timmach.png'),
+  trongHung: require('./doctors/tronghung.png'),
+  leHung: require('./doctors/lehung.png'),
+  backgroud_sv: require('./services/bg.png'),
+  posterHome: require('./posters/home.png'),
+  postTaiNha: require('./posters/tainha.png'),
+  posterTaiVien: require('./posters/taivien.png'),
+  posterSongKhoe: require('./posters/songkhoe.png'),
+  bv_choray: require('./hospitals/choray.png'),
+  tamLyTuXa: require('./telemedicine/tamlytuxa.png'),
+  xetNghiemTaiNha: require('./tainha/xetnghiem.png'),
+  goiKhamCoBan: require('./goikham/goikhamcoban.png'),
+  thucdon: require('./baiviet/thucdon7ngay.png'),
+  lapkehoach: require('./baiviet/lapkehoach.png'),
+  iconQuyTrinh: require('./baiviet/iconquytrinh.png'),
+  iconHopTac: require('./baiviet/iconhoptac.png'),
+  helloDoctor: require('./partners/hellodoctor.png'),
+  posterBaiViet: require('./baiviet/poster.png'),
+};
+
+export default images;
