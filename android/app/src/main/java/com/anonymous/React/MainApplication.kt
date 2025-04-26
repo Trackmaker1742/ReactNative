@@ -1,4 +1,4 @@
-package com.react
+package com.anonymous.React
 
 import android.app.Application
 import android.content.res.Configuration
