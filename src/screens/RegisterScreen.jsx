@@ -5,41 +5,53 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  Image,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
   Alert,
+  Image,
 } from "react-native";
 import axios from "axios";
 
-const LoginScreen = ({ navigation }) => {
+const RegisterScreen = ({ navigation }) => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = async () => {
-    if (!email || !password) {
-      Alert.alert("Error", "Please enter both email and password");
+  const handleRegister = async () => {
+    if (!name || !email || !password || !confirmPassword) {
+      Alert.alert("Error", "Please fill all fields");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      Alert.alert("Error", "Passwords do not match");
       return;
     }
 
     setLoading(true);
     try {
-      const response = await axios.post("http://10.0.2.2:3003/api/auth/login", {
-        email: email,
-        password: password,
-      });
+      const response = await axios.post(
+        "http://10.0.2.2:3003/api/auth/register",
+        {
+          name,
+          email,
+          password,
+        }
+      );
 
       setLoading(false);
-      if (response.data) {
-        // Store tokens in secure storage (implement this)
-        navigation.navigate("Main");
-      }
+      Alert.alert(
+        "Registration Successful",
+        "Please log in with your new account",
+        [{ text: "OK", onPress: () => navigation.navigate("Login") }]
+      );
     } catch (error) {
       setLoading(false);
       Alert.alert(
-        "Login Failed",
+        "Registration Failed",
         error.response?.data?.message || "Something went wrong"
       );
     }
@@ -53,14 +65,26 @@ const LoginScreen = ({ navigation }) => {
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={styles.logoContainer}>
           <Image
-            source={require("../assets/logo.png")}
+            source={require("../assets/logo.svg")}
             style={styles.logo}
             resizeMode="contain"
           />
-          <Text style={styles.welcomeText}>Welcome Back!</Text>
+        </View>
+
+        <View style={styles.headerContainer}>
+          <Text style={styles.headerText}>Create Account</Text>
+          <Text style={styles.subHeaderText}>Sign up to get started!</Text>
         </View>
 
         <View style={styles.formContainer}>
+          <Text style={styles.label}>Full Name</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Enter your full name"
+            value={name}
+            onChangeText={setName}
+          />
+
           <Text style={styles.label}>Email</Text>
           <TextInput
             style={styles.input}
@@ -80,28 +104,30 @@ const LoginScreen = ({ navigation }) => {
             onChangeText={setPassword}
           />
 
-          <TouchableOpacity
-            style={styles.forgotPasswordContainer}
-            onPress={() => console.log("Forgot password")}
-          >
-            <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
-          </TouchableOpacity>
+          <Text style={styles.label}>Confirm Password</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Confirm your password"
+            secureTextEntry
+            value={confirmPassword}
+            onChangeText={setConfirmPassword}
+          />
 
           <TouchableOpacity
-            style={styles.loginButton}
-            onPress={handleLogin}
+            style={styles.registerButton}
+            onPress={handleRegister}
             disabled={loading}
           >
-            <Text style={styles.loginButtonText}>
-              {loading ? "Logging in..." : "Login"}
+            <Text style={styles.registerButtonText}>
+              {loading ? "Registering..." : "Register"}
             </Text>
           </TouchableOpacity>
         </View>
 
-        <View style={styles.registerContainer}>
-          <Text style={styles.registerText}>Don't have an account? </Text>
-          <TouchableOpacity onPress={() => navigation.navigate("Register")}>
-            <Text style={styles.registerLink}>Register</Text>
+        <View style={styles.loginContainer}>
+          <Text style={styles.loginText}>Already have an account? </Text>
+          <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+            <Text style={styles.loginLink}>Login</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -117,21 +143,29 @@ const styles = StyleSheet.create({
   scrollContainer: {
     flexGrow: 1,
     padding: 20,
-    justifyContent: "center",
   },
   logoContainer: {
     alignItems: "center",
-    marginBottom: 40,
+    marginTop: 40,
+    marginBottom: 20,
   },
   logo: {
     width: 120,
     height: 120,
   },
-  welcomeText: {
-    fontSize: 24,
+  headerContainer: {
+    alignItems: "center",
+    marginBottom: 30,
+  },
+  headerText: {
+    fontSize: 28,
     fontWeight: "bold",
-    marginTop: 10,
     color: "#333",
+  },
+  subHeaderText: {
+    fontSize: 16,
+    color: "#666",
+    marginTop: 8,
   },
   formContainer: {
     marginBottom: 30,
@@ -151,39 +185,33 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     backgroundColor: "#f9f9f9",
   },
-  forgotPasswordContainer: {
-    alignSelf: "flex-end",
-    marginBottom: 20,
-  },
-  forgotPasswordText: {
-    color: "#FF5733",
-    fontSize: 14,
-  },
-  loginButton: {
+  registerButton: {
     backgroundColor: "#FF5733",
     borderRadius: 8,
     height: 50,
     justifyContent: "center",
     alignItems: "center",
+    marginTop: 10,
   },
-  loginButtonText: {
+  registerButtonText: {
     color: "#ffffff",
     fontSize: 16,
     fontWeight: "bold",
   },
-  registerContainer: {
+  loginContainer: {
     flexDirection: "row",
     justifyContent: "center",
+    marginBottom: 30,
   },
-  registerText: {
+  loginText: {
     fontSize: 14,
     color: "#666",
   },
-  registerLink: {
+  loginLink: {
     fontSize: 14,
     color: "#FF5733",
     fontWeight: "bold",
   },
 });
 
-export default LoginScreen;
+export default RegisterScreen;

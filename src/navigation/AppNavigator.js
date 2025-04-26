@@ -2,81 +2,54 @@ import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Ionicons } from "@expo/vector-icons";
-
-// Import your screens here
-import MainScreen from "../MainScreen";
+import FlashScreen from "../screens/SplashScreen";
 import LoginScreen from "../screens/LoginScreen";
-import RegisterScreen from "../screens/RegisterScreen";
-// Add more screen imports as needed
+import OTPVerificationScreen from "../screens/OtpScreen";
+import HomeScreen from "../screens/HomeScreen";
+import AppointmentScreen from "../screens/AppointmentScreen";
+import ProfileScreen from "../screens/ProfileScreen";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-function HomeTabNavigator() {
+// Main Tab Navigator
+const MainTabNavigator = () => {
   return (
     <Tab.Navigator
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
-          let iconName;
-
-          if (route.name === "Home") {
-            iconName = focused ? "home" : "home-outline";
-          } else if (route.name === "Profile") {
-            iconName = focused ? "person" : "person-outline";
-          } else if (route.name === "Bookings") {
-            iconName = focused ? "calendar" : "calendar-outline";
-          }
-
-          return <Ionicons name={iconName} size={size} color={color} />;
-        },
-        tabBarActiveTintColor: "#FF5733",
-        tabBarInactiveTintColor: "gray",
-      })}
+      screenOptions={{
+        headerShown: false,
+        tabBarStyle: { display: "none" },
+      }}
     >
-      <Tab.Screen
-        name="Home"
-        component={MainScreen}
-        options={{ headerShown: false }}
-      />
-      <Tab.Screen name="Bookings" component={BookingsScreen} />
+      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Appointments" component={AppointmentScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );
-}
+};
 
-// Create placeholder components for missing screens
-const BookingsScreen = () => (
-  <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-    <Text>Bookings Screen</Text>
-  </View>
-);
-const ProfileScreen = () => (
-  <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-    <Text>Profile Screen</Text>
-  </View>
-);
-
-export default function AppNavigator() {
+const AppNavigator = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
+      <Stack.Navigator
+        screenOptions={{ headerShown: false }}
+        initialRouteName="FlashScreen"
+      >
+        {/* FlashScreen */}
+        <Stack.Screen name="FlashScreen" component={FlashScreen} />
+
+        {/* Auth screens */}
+        <Stack.Screen name="Login" component={LoginScreen} />
         <Stack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={{ headerShown: false }}
+          name="OTPVerification"
+          component={OTPVerificationScreen}
         />
-        <Stack.Screen
-          name="Register"
-          component={RegisterScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Main"
-          component={HomeTabNavigator}
-          options={{ headerShown: false }}
-        />
+
+        {/* Main app */}
+        <Stack.Screen name="MainApp" component={MainTabNavigator} />
       </Stack.Navigator>
     </NavigationContainer>
   );
-}
+};
+
+export default AppNavigator;
