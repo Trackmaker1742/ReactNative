@@ -31,22 +31,23 @@ const DoctorListScreen = () => {
     fetchDoctors();
   }, []);
 
-
   const renderDoctorItem = ({ item }) => (
     <TouchableOpacity 
-      style={styles.doctorItem} 
+      style={styles.doctorContainer} 
       onPress={() => navigation.navigate('DoctorDetail', { id: item._id, slug: item.userId?.slug })}
     >
-      <Image 
-        source={{ 
-          uri: `${API_URL}${item.userId?.avatar}` || 'https://via.placeholder.com/100?text=Doctor' 
-        }} 
-        style={styles.doctorImage} 
-      />
-      <Text style={styles.doctorName} numberOfLines={2}>{item.userId?.fullname}</Text>
-      <Text style={styles.doctorSpecialty} numberOfLines={1}>
-        {item.specialties && item.specialties.length > 0 ? item.specialties[0]?.name : 'Bác sĩ'}
-      </Text>
+      <View style={styles.doctorCard}>
+        <Image
+          source={{ 
+            uri: `${API_URL}${item.userId?.avatar}` || 'https://via.placeholder.com/100?text=Doctor' 
+          }} 
+          style={styles.doctorAvatar} 
+        />
+        <Text style={styles.doctorName}>{item.userId?.fullname}</Text>
+        <Text style={styles.doctorSpecialty} numberOfLines={1}>
+          {item.specialties && item.specialties.length > 0 ? item.specialties[0]?.name : 'Bác sĩ'}
+        </Text>
+      </View>
     </TouchableOpacity>
   );
 
@@ -75,7 +76,7 @@ const DoctorListScreen = () => {
     <DefaultLayout>
       <View style={styles.sectionContainer}>
         <View style={styles.sectionHeaderContainer}>
-          <Text style={styles.sectionTitle}>Bác sĩ nổi bật</Text>
+          <Text style={styles.sectionTitle}>Bác sĩ</Text>
         </View>
       </View>
       <FlatList
@@ -90,8 +91,7 @@ const DoctorListScreen = () => {
 
 const styles = StyleSheet.create({
   listContainer: {
-    padding: 20,
-    flexDirection: 'row',
+    flexDirection: 'column',
   },
   sectionContainer: {
     paddingHorizontal: 15,
@@ -102,32 +102,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   sectionTitle: {
-    marginTop: 20,
+    paddingTop: 10,
+    paddingLeft: 12,
     fontSize: 18,
     fontWeight: 'bold',
     color: '#333',
-  },
-  doctorItem: {
-    width: 120,
-    alignItems: 'center',
-    marginRight: 15,
-  },
-  doctorImage: {
-    width: 90,
-    height: 90,
-    borderRadius: 45,
-    backgroundColor: '#E6F4FF',
-  },
-  doctorName: {
-    marginTop: 8,
-    fontSize: 14,
-    fontWeight: '500',
-    textAlign: 'center',
-  },
-  doctorSpecialty: {
-    fontSize: 12,
-    color: '#666',
-    textAlign: 'center',
   },
   loadingContainer: {
     flex: 1,
@@ -147,6 +126,35 @@ const styles = StyleSheet.create({
   errorText: {
     color: 'red',
     textAlign: 'center',
+  },
+  doctorContainer: {
+    marginVertical: 10,
+  },
+  doctorCard: {
+    flexDirection: 'row',
+    overflow: 'hidden',
+    borderColor: '#000',
+    borderBottomWidth: 1,
+    fontSize: 14,
+  },
+  doctorName: {
+    fontWeight: '500',
+    flex: 1,
+    paddingTop: 25,
+    paddingLeft: 15,
+  },
+  doctorSpecialty: {
+    color: '#666',
+    marginTop: 4,
+  },
+  doctorAvatar: {
+    width: 70,
+    height: 70,
+    borderRadius: 40,
+    backgroundColor: '#BFBFBF',
+    flexShrink: 0,
+    marginLeft: 15,
+    marginVertical: 15,
   },
 });
 

@@ -4,9 +4,13 @@ import DefaultLayout from '../layouts/DefaultLayout';
 import { doctorService } from '../service/api';
 import RenderHTML from 'react-native-render-html';
 
-const API_URL = "http://10.0.2.2:3003/";
-
 const { width } = Dimensions.get('window');
+
+const mockSchedules = [
+  { timeType: 'T1', time: '08:00-09:00' },
+  { timeType: 'T2', time: '09:00-10:00' },
+  { timeType: 'T3', time: '10:00-11:00' },
+];
 
 const DoctorDetailScreen = ({ route }) => {
   const { slug } = route.params;
@@ -58,25 +62,36 @@ const DoctorDetailScreen = ({ route }) => {
     };
 
     return (
-      <ScrollView contentContainerStyle={styles.contentContainer}>
-        <Image
-          source={{
-            uri: `${API_URL}${doctor.avatar}` || 'https://via.placeholder.com/100?text=Doctor'
-          }}
-          style={styles.avatar}
-        />
-        <Text style={styles.name}>
-          {typeof doctor.fullname === 'string' ? doctor.fullname : 'Doctor Name'}
-        </Text>
-        <Text style={styles.specialty}>
-          {typeof doctor.specialty === 'string' ? doctor.specialty : 'Specialty not specified'}
-        </Text>
-        <View style={styles.card}>
-          <Text style={styles.sectionTitle}>About</Text>
-          <RenderHTML
-            contentWidth={width * 0.9}
-            source={htmlSource}
+      <ScrollView>
+        <View style={styles.doctorContainer}>
+          <Image
+            source={{ uri: `http://10.0.2.2:3003/${doctor.avatar}` }}
+            style={styles.doctorAvatar}
           />
+          <View style={styles.doctorInfo}>
+            <Text style={styles.doctorName}>
+              {typeof doctor.fullname === 'string' ? doctor.fullname : 'Doctor Name'}
+            </Text>
+            <Text style={styles.doctorSpecialty}>
+              {typeof doctor.specialty === 'string' ? doctor.specialty : 'Specialty not specified'}
+            </Text>
+            <Text style={styles.doctorCity}>Hà Nội</Text>
+          </View>
+        </View>
+
+        <Text style={styles.scheduleTitle}>Lịch khám</Text>
+        <View style={styles.scheduleContainer}>
+          {mockSchedules.map((slot, idx) => (
+            <View key={idx} style={styles.timeItem}>
+              <Text style={styles.timeText}>{slot.time}</Text>
+            </View>
+          ))}
+        </View>
+
+        <View style={styles.hospitalAddressContainer}>
+          <Text style={styles.hospitalAddressLabel}>Địa chỉ khám</Text>
+          <Text style={styles.hospitalName}>Bệnh viện Chợ Rẫy</Text>
+          <Text style={styles.hospitalAddress}>55 Giải Phóng, Hai Bà Trưng, Hà Nội</Text>
         </View>
       </ScrollView>
     );
@@ -92,45 +107,84 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     padding: 24,
   },
-  contentContainer: {
-    padding: 24,
-    alignItems: 'center',
-    backgroundColor: '#F9F9F9',
+  doctorContainer: {
+    flexDirection: 'row',
+    fontSize: 14,
+    backgroundColor: '#E6F4FF',
   },
-  avatar: {
-    width: 150,
-    height: 150,
-    borderRadius: 75,
-    marginBottom: 20,
-    borderWidth: 2,
-    borderColor: '#007AFF',
+  doctorInfo: {
+    flex: 1,
   },
-  name: {
-    fontSize: 24,
-    fontWeight: '700',
+  doctorAvatar: {
+    width: 100,
+    height: 100,
+    borderRadius: 60,
+    marginVertical: 10,
+    marginHorizontal: '3%',
+  },
+  doctorName: {
+    flexDirection: 'column',
+    flexWrap: 'wrap',
+    paddingTop: 15,
+    paddingBottom: 5,
+    fontWeight: 'bold',
     color: '#222',
-    marginBottom: 6,
   },
-  specialty: {
-    fontSize: 16,
-    color: '#666',
+  doctorSpecialty: {
+    color: '#555',
+    marginBottom: 8,
+  },
+  doctorCity: {
+    color: '#888',
     marginBottom: 20,
   },
-  card: {
-    width: width * 0.9,
-    backgroundColor: '#FFF',
-    borderRadius: 12,
-    padding: 20,
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 8,
+  scheduleTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#0D75D6',
+    marginLeft: 15,
+    marginVertical: 10,
+  },
+  scheduleContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    marginLeft: 10,
+    marginBottom: 20,
+  },
+  timeItem: {
+    backgroundColor: '#E0F0FF',
+    paddingVertical: 4,
+    paddingHorizontal: 12,
+    borderRadius: 10,
+    margin: 5,
+  },
+  timeText: {
+    color: '#0D75D6',
+    fontWeight: '600',
+  },
+  hospitalAddressContainer: {
+    alignItems: 'left',
+    marginLeft: 15,
+    marginBottom: 20,
+  },
+  hospitalAddressLabel: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 4,
+    color: '#333',
+  },
+  hospitalName: {
+    fontSize: 15,
+    color: '#555',
+  },
+  hospitalAddress: {
+    fontSize: 14,
+    color: '#777',
   },
   sectionTitle: {
     fontSize: 18,
     fontWeight: '600',
-    color: '#007AFF',
+    color: '#0D75D6',
     marginBottom: 10,
   },
   loadingText: {
