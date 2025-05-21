@@ -24,7 +24,7 @@ const HomeScreen = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [searchText, setSearchText] = useState('');
-  
+
   // Data states
   const [specialties, setSpecialties] = useState([]);
   const [doctors, setDoctors] = useState([]);
@@ -45,13 +45,13 @@ const HomeScreen = () => {
   const fetchData = async () => {
     setIsLoading(true);
     setError(null);
-    
+
     try {
       const token = await AsyncStorage.getItem("accessToken");
       // Parallel API calls for better performance - SỬA LẠI CÁC PHƯƠNG THỨC API
       const [specialtiesRes, doctorsRes, clinicsRes, postsRes] = await Promise.all([
         specialtyService.getAllSpecialties(),
-        doctorService.getAllDoctors(),  
+        doctorService.getAllDoctors(),
         clinicService.getAllClinics(),
         postService.getAllPosts()
       ]);
@@ -82,8 +82,8 @@ const HomeScreen = () => {
 
   // Render a service grid item
   const renderServiceItem = ({ item }) => (
-    <TouchableOpacity 
-      style={styles.serviceItem} 
+    <TouchableOpacity
+      style={styles.serviceItem}
       onPress={() => navigation.navigate(item.route)}
     >
       <View style={styles.serviceIconContainer}>
@@ -95,15 +95,15 @@ const HomeScreen = () => {
 
   // Render a specialty item
   const renderSpecialtyItem = ({ item }) => (
-    <TouchableOpacity 
-      style={styles.specialtyItem} 
+    <TouchableOpacity
+      style={styles.specialtyItem}
       onPress={() => navigation.navigate('SpecialtyDetail', { id: item._id, slug: item.slug })}
     >
-      <Image 
-        source={{ 
+      <Image
+        source={{
           uri: `${API_URL}${item.avatar}` || 'https://via.placeholder.com/100?text=No+Image'
-        }} 
-        style={styles.specialtyImage} 
+        }}
+        style={styles.specialtyImage}
       />
       <Text style={styles.specialtyName} numberOfLines={1}>{item.name}</Text>
     </TouchableOpacity>
@@ -111,15 +111,15 @@ const HomeScreen = () => {
 
   // Render a doctor item
   const renderDoctorItem = ({ item }) => (
-    <TouchableOpacity 
-      style={styles.doctorItem} 
+    <TouchableOpacity
+      style={styles.doctorItem}
       onPress={() => navigation.navigate('DoctorDetail', { id: item._id, slug: item.userId?.slug })}
     >
-      <Image 
-        source={{ 
-          uri: `${API_URL}${item.userId?.avatar}` || 'https://via.placeholder.com/100?text=Doctor' 
-        }} 
-        style={styles.doctorImage} 
+      <Image
+        source={{
+          uri: `${API_URL}${item.userId?.avatar}` || 'https://via.placeholder.com/100?text=Doctor'
+        }}
+        style={styles.doctorImage}
       />
       <Text style={styles.doctorName} numberOfLines={2}>{item.userId?.fullname}</Text>
       <Text style={styles.doctorSpecialty} numberOfLines={1}>
@@ -130,15 +130,15 @@ const HomeScreen = () => {
 
   // Render a clinic item
   const renderClinicItem = ({ item }) => (
-    <TouchableOpacity 
-      style={styles.clinicItem} 
+    <TouchableOpacity
+      style={styles.clinicItem}
       onPress={() => navigation.navigate('ClinicDetail', { id: item._id, slug: item.slug })}
     >
-      <Image 
-        source={{ 
+      <Image
+        source={{
           uri: `${API_URL}${item.avatar}` || 'https://via.placeholder.com/300x150?text=Clinic'
-        }} 
-        style={styles.clinicImage} 
+        }}
+        style={styles.clinicImage}
         resizeMode="contain"
       />
       <View style={styles.clinicInfo}>
@@ -150,15 +150,15 @@ const HomeScreen = () => {
 
   // Render a post item
   const renderPostItem = ({ item }) => (
-    <TouchableOpacity 
-      style={styles.articleItem} 
+    <TouchableOpacity
+      style={styles.articleItem}
       onPress={() => navigation.navigate('PostDetail', { id: item._id, slug: item.slug })}
     >
-      <Image 
-        source={{ 
+      <Image
+        source={{
           uri: `${API_URL}${item.poster}` || 'https://via.placeholder.com/300x200?text=Post'
-        }} 
-        style={styles.articleImage} 
+        }}
+        style={styles.articleImage}
       />
       <Text style={styles.articleTitle} numberOfLines={2}>{item.title}</Text>
     </TouchableOpacity>
@@ -167,7 +167,7 @@ const HomeScreen = () => {
   // Loading state
   if (isLoading && !refreshing) {
     return (
-      <DefaultLayout>
+      <DefaultLayout home={true}>
         <View style={styles.loadingContainer}>
           <ActivityIndicator size="large" color="#2196F3" />
           <Text style={styles.loadingText}>Đang tải dữ liệu...</Text>
@@ -177,7 +177,7 @@ const HomeScreen = () => {
   }
 
   return (
-    <DefaultLayout>
+    <DefaultLayout home={true} >
       <View style={styles.searchContainer}>
         <Ionicons name="search" size={20} color="#888" style={styles.searchIcon} />
         <TextInput
@@ -198,8 +198,8 @@ const HomeScreen = () => {
           </TouchableOpacity>
         </View>
       ) : (
-        <ScrollView 
-          style={styles.scrollView} 
+        <ScrollView
+          style={styles.scrollView}
           showsVerticalScrollIndicator={false}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
@@ -207,7 +207,7 @@ const HomeScreen = () => {
         >
           {/* Banner */}
           <Image
-            source={images.posterHome}
+            source={images.posterTaiVien}
             style={styles.banner}
             resizeMode="cover"
           />
@@ -217,8 +217,8 @@ const HomeScreen = () => {
             <Text style={styles.sectionTitle}>Dịch vụ toàn diện</Text>
             <View style={styles.servicesGrid}>
               {services.map((service) => (
-                <TouchableOpacity 
-                  key={service.id} 
+                <TouchableOpacity
+                  key={service.id}
                   style={styles.serviceItem}
                   onPress={() => navigation.navigate(service.route)}
                 >
@@ -243,7 +243,7 @@ const HomeScreen = () => {
               <FlatList
                 data={specialties}
                 renderItem={renderSpecialtyItem}
-                keyExtractor={item => item._id ||`specialty-${item.id || Math.random().toString()}`}
+                keyExtractor={item => item._id || `specialty-${item.id || Math.random().toString()}`}
                 horizontal
                 showsHorizontalScrollIndicator={false}
                 contentContainerStyle={styles.specialtiesList}
@@ -400,7 +400,7 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   viewMoreText: {
-    fontSize: 14,
+    fontSize: 12,
     color: '#2196F3',
     fontWeight: '500',
   },
@@ -442,7 +442,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   serviceTitle: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: '500',
     color: '#333',
     flex: 1,
@@ -463,7 +463,7 @@ const styles = StyleSheet.create({
   },
   specialtyName: {
     marginTop: 8,
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: '500',
     textAlign: 'center',
   },
@@ -483,7 +483,7 @@ const styles = StyleSheet.create({
   },
   doctorName: {
     marginTop: 8,
-    fontSize: 14,
+    fontSize: 10,
     fontWeight: '500',
     textAlign: 'center',
   },
@@ -496,7 +496,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   clinicItem: {
-    width: 200,
+    width: 150,
     backgroundColor: '#fff',
     borderRadius: 10,
     marginRight: 15,
@@ -511,15 +511,15 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   clinicImage: {
-   
-    height: 100,
-    
+
+    height: 80,
+
   },
   clinicInfo: {
     padding: 10,
   },
   clinicName: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: '500',
   },
   clinicAddress: {
@@ -547,11 +547,11 @@ const styles = StyleSheet.create({
   },
   articleImage: {
     width: '100%',
-    height: 100,
+    height: 80,
   },
   articleTitle: {
     padding: 10,
-    fontSize: 14,
+    fontSize: 10,
     fontWeight: '500',
   },
 });

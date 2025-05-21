@@ -3,17 +3,17 @@ import { View, StyleSheet, SafeAreaView, StatusBar } from 'react-native';
 import { HeaderLogin } from '../components/Header';
 import NavFooter from '../components/NavFooter';
 
-const DefaultLayout = ({ children, hideHeader = false, hideFooter = false }) => {
+const DefaultLayout = ({ children, hideHeader = false, hideFooter = false, home = false }) => {
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#fff" />
-      
-      {!hideHeader && <HeaderLogin showBackButton={false} />}
-      
+
+      {!hideHeader && <HeaderLogin showBackButton={false} home={home} />}
+
       <View style={styles.content}>
         {children}
       </View>
-      
+
       {!hideFooter && <NavFooter />}
     </SafeAreaView>
   );

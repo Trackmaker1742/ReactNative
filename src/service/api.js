@@ -2,7 +2,6 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const API_URL = "http://10.0.2.2:3003/api";
-
 const api = axios.create({
   baseURL: API_URL,
   timeout: 10000,
@@ -11,20 +10,25 @@ const api = axios.create({
   },
 });
 
-// Interceptors giữ nguyên
 api.interceptors.request.use(
   async (config) => {
     const token = await AsyncStorage.getItem("accessToken");
+    const refreshToken = await AsyncStorage.getItem("refreshToken");
+
     if (token) {
+      // Thêm tiền tố 'Bearer' cho đúng định dạng
       config.headers.Authorization = `Bearer ${token}`;
     }
+
+    if (refreshToken) {
+      // Thêm refresh token vào mỗi request
+      config.headers["x-refresh-token"] = refreshToken;
+    }
+
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
-
 api.interceptors.response.use(
   (response) => {
     return response;
@@ -66,11 +70,9 @@ api.interceptors.response.use(
   }
 );
 
-// Auth service - cập nhật theo đúng endpoints
 export const authService = {
   requestOtp: async (email) => {
     try {
-      // Đúng endpoint: /auth/mobile-login
       const response = await api.post("/auth/mobile-login", { email });
       return { success: true, data: response.data };
     } catch (error) {
@@ -83,7 +85,6 @@ export const authService = {
 
   verifyOtp: async (email, otp) => {
     try {
-      // Đúng endpoint: /auth/mobile-verify-otp
       const response = await api.post("/auth/mobile-verify-otp", {
         email,
         otp,
@@ -115,7 +116,6 @@ export const authService = {
 
   getCurrentUser: async () => {
     try {
-      // Đúng endpoint: /auth/me
       const response = await api.get("/auth/me");
       return { success: true, data: response.data };
     } catch (error) {
@@ -129,8 +129,6 @@ export const authService = {
 
   logout: async () => {
     try {
-      // Đúng endpoint: /auth/logout
-      await api.get("/auth/logout"); // Thay đổi từ POST sang GET theo routes
       await AsyncStorage.removeItem("accessToken");
       await AsyncStorage.removeItem("refreshToken");
       await AsyncStorage.removeItem("user");
@@ -144,11 +142,9 @@ export const authService = {
   },
 };
 
-// Booking service - cập nhật theo đúng endpoints
 export const bookingService = {
   getAllBookings: async () => {
     try {
-      // Đúng endpoint: /bookings (GET)
       const response = await api.get("/bookings");
       return { success: true, data: response.data };
     } catch (error) {
@@ -162,7 +158,6 @@ export const bookingService = {
 
   getBookingById: async (id) => {
     try {
-      // Đúng endpoint: /bookings/:id (GET)
       const response = await api.get(`/bookings/${id}`);
       return { success: true, data: response.data };
     } catch (error) {
@@ -176,10 +171,19 @@ export const bookingService = {
 
   createBooking: async (bookingData) => {
     try {
-      // Đúng endpoint: /bookings/create (POST)
+      // Log trước khi gửi request
+      console.log("Gửi request booking:", bookingData);
+      const token = await AsyncStorage.getItem("accessToken");
+      console.log("Token sử dụng:", token);
+
       const response = await api.post("/bookings/create", bookingData);
+      console.log("Response:", response.data);
       return { success: true, data: response.data };
     } catch (error) {
+      console.error(
+        "Error creating booking:",
+        error.response?.data || error.message
+      );
       return {
         success: false,
         message: error.response?.data?.message || "Đặt lịch thất bại",
@@ -188,11 +192,9 @@ export const bookingService = {
   },
 };
 
-// Doctor service - cập nhật theo đúng endpoints và params
 export const doctorService = {
   getAllDoctors: async () => {
     try {
-      // Đúng endpoint: /doctors (GET)
       const response = await api.get("/doctors");
       return { success: true, data: response.data };
     } catch (error) {
@@ -206,7 +208,6 @@ export const doctorService = {
 
   getDoctorBySlug: async (slug) => {
     try {
-      // Đúng endpoint: /doctors/:slug (GET)
       const response = await api.get(`/doctors/${slug}`);
       return { success: true, data: response.data };
     } catch (error) {
@@ -220,7 +221,6 @@ export const doctorService = {
 
   getDoctorSchedule: async (slug, scheduleId) => {
     try {
-      // Đúng endpoint: /doctors/:slug/schedule/:schedule_id (GET)
       const response = await api.get(`/doctors/${slug}/schedule/${scheduleId}`);
       return { success: true, data: response.data };
     } catch (error) {
@@ -232,11 +232,9 @@ export const doctorService = {
   },
 };
 
-// Clinic service - cập nhật theo đúng endpoints
 export const clinicService = {
   getAllClinics: async () => {
     try {
-      // Đúng endpoint: /clinics (GET)
       const response = await api.get("/clinics");
       return { success: true, data: response.data };
     } catch (error) {
@@ -250,7 +248,6 @@ export const clinicService = {
 
   getClinicBySlug: async (slug) => {
     try {
-      // Đúng endpoint: /clinics/:slug (GET)
       const response = await api.get(`/clinics/${slug}`);
       return { success: true, data: response.data };
     } catch (error) {
@@ -263,11 +260,9 @@ export const clinicService = {
   },
 };
 
-// Specialty service - cập nhật theo đúng endpoints
 export const specialtyService = {
   getAllSpecialties: async () => {
     try {
-      // Đúng endpoint: /specialties (GET)
       const response = await api.get("/specialties");
       return { success: true, data: response.data };
     } catch (error) {
@@ -282,7 +277,6 @@ export const specialtyService = {
 
   getSpecialtyBySlug: async (slug) => {
     try {
-      // Đúng endpoint: /specialties/:slug (GET)
       const response = await api.get(`/specialties/${slug}`);
       return { success: true, data: response.data };
     } catch (error) {
@@ -296,11 +290,9 @@ export const specialtyService = {
   },
 };
 
-// Post service - cập nhật theo đúng endpoints
 export const postService = {
   getAllPosts: async () => {
     try {
-      // Đúng endpoint: /posts (GET)
       const response = await api.get("/posts");
       return { success: true, data: response.data };
     } catch (error) {
@@ -314,7 +306,6 @@ export const postService = {
 
   getPostBySlug: async (slug) => {
     try {
-      // Giả định endpoint: /posts/:slug (GET)
       const response = await api.get(`/posts/${slug}`);
       return { success: true, data: response.data };
     } catch (error) {
@@ -327,11 +318,9 @@ export const postService = {
   },
 };
 
-// User service - cập nhật theo đúng endpoints
 export const userService = {
   updateProfile: async (userData) => {
     try {
-      // Đúng endpoint: /users/update (PATCH)
       const response = await api.patch("/users/update", userData);
       if (response.data.user) {
         await AsyncStorage.setItem("user", JSON.stringify(response.data.user));
@@ -347,7 +336,6 @@ export const userService = {
 
   changePassword: async (passwordData) => {
     try {
-      // Đúng endpoint: /users/change-password (PATCH)
       const response = await api.patch("/users/change-password", passwordData);
       return { success: true, data: response.data };
     } catch (error) {
@@ -359,7 +347,6 @@ export const userService = {
   },
 };
 
-// Export default cho tương thích với code cũ
 export default {
   auth: authService,
   booking: bookingService,

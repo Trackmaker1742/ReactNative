@@ -2,22 +2,24 @@ import React from 'react';
 import { View, Image, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Logo from '../../../assets/logo.svg';
-const HeaderLogin = ({ showBackButton = true }) => {
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
+const HeaderLogin = ({ showBackButton = true, home = false }) => {
   const navigation = useNavigation();
 
   return (
     <View style={styles.container}>
-      {showBackButton && (
-        <TouchableOpacity 
-          style={styles.backButton} 
+      {!home && (
+        <TouchableOpacity
+          style={styles.backButton}
           onPress={() => navigation.goBack()}
         >
-          <Text style={styles.backButtonText}>✕</Text>
+          <Text style={styles.backButtonText}>{showBackButton ? <Ionicons name="close" size={24} color="#000" /> : <Ionicons name="arrow-back" size={24} color="#000" />}</Text>
         </TouchableOpacity>
       )}
-     <View style={styles.logoContainer}>
-        <Logo height={30}   />
-        </View>
+      <View style={styles.logoContainer}>
+        <Logo height={30} />
+      </View>
     </View>
   );
 };
