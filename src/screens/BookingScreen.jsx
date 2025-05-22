@@ -29,7 +29,7 @@ const BookingScreen = ({ route, navigation }) => {
     reasons: '',
   });
 
-  // Lấy thông tin người dùng đã đăng nhập
+
   useEffect(() => {
     const getUserInfo = async () => {
       try {
@@ -93,7 +93,7 @@ const BookingScreen = ({ route, navigation }) => {
       const data = await response.json();
       console.log("Direct fetch response:", data);
 
-      // Kiểm tra token mới được trả về trong response header
+
       const newToken = response.headers.get('x-access-token');
       if (newToken) {
         console.log("Nhận được token mới từ server");

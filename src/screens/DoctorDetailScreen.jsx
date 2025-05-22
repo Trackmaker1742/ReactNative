@@ -153,7 +153,7 @@ const DoctorDetailScreen = ({ route }) => {
 
         <Text style={styles.scheduleTitle}>Lịch khám</Text>
 
-        {/* DatePicker tương tự SDatePicker trong ReactJS */}
+
         <View style={styles.customPickerContainer}>
           <Text style={styles.selectedDateDisplay}>
             {dateOptions.find(option => option.value === selectedDate)?.label.replace(', ', ' - ') || 'Chọn ngày'}
