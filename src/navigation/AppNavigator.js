@@ -8,8 +8,13 @@ import OTPVerificationScreen from "../screens/OtpScreen";
 import HomeScreen from "../screens/HomeScreen";
 import AppointmentScreen from "../screens/AppointmentScreen";
 import ProfileScreen from "../screens/ProfileScreen";
+
+import ClinicDetailScreen from "../screens/ClinicDetailScreen";
+import ClinicListScreen from "../screens/ClinicListScreen";
+
 import DoctorDetailScreen from "../screens/DoctorDetailScreen";
 import DoctorListScreen from "../screens/DoctorListScreen";
+
 import BookingScreen from "../screens/BookingScreen";
 import UserInfoScreen from "../screens/UserInfoScreen";
 const Stack = createStackNavigator();
@@ -53,6 +58,10 @@ const AppNavigator = () => {
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Appointments" component={AppointmentScreen} />
         <Stack.Screen name="Profile" component={ProfileScreen} />
+
+        {/* Clinic screens */}
+        <Stack.Screen name="ClinicDetail" component={ClinicDetailScreen} />
+        <Stack.Screen name="ClinicList" component={ClinicListScreen} />
 
         {/* Doctor screens */}
         <Stack.Screen name="DoctorDetail" component={DoctorDetailScreen} />

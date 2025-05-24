@@ -121,7 +121,7 @@ const HomeScreen = () => {
         }}
         style={styles.doctorImage}
       />
-      <Text style={styles.doctorName} numberOfLines={2}>{item.userId?.fullname}</Text>
+      <Text style={styles.doctorName} numberOfLines={3}>{item.userId?.fullname}</Text>
       <Text style={styles.doctorSpecialty} numberOfLines={1}>
         {item.specialties && item.specialties.length > 0 ? item.specialties[0]?.name : 'Bác sĩ'}
       </Text>
@@ -279,7 +279,7 @@ const HomeScreen = () => {
           <View style={styles.sectionContainer}>
             <View style={styles.sectionHeaderContainer}>
               <Text style={styles.sectionTitle}>Cơ sở y tế nổi bật</Text>
-              <TouchableOpacity onPress={() => navigation.navigate('ClinicList')}>
+              <TouchableOpacity onPress={() => navigation.navigate('ClinicListScreen')}>
                 <Text style={styles.viewMoreText}>Xem thêm</Text>
               </TouchableOpacity>
             </View>
@@ -483,7 +483,7 @@ const styles = StyleSheet.create({
   },
   doctorName: {
     marginTop: 8,
-    fontSize: 10,
+    fontSize: 12,
     fontWeight: '500',
     textAlign: 'center',
   },

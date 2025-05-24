@@ -213,6 +213,15 @@ const DoctorDetailScreen = ({ route }) => {
               color: '#333',
               lineHeight: 24,
               paddingVertical: 8,
+              paddingHorizontal: 20,
+            },
+            h1: {
+              paddingHorizontal: 15,
+            },
+            h2: {
+              paddingHorizontal: 15,
+            },
+            h3: {
               paddingHorizontal: 15,
             },
           }}
