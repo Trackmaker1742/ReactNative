@@ -5,14 +5,19 @@ import { clinicService } from '../service/api';
 import { useNavigation } from '@react-navigation/native';
 import { Dimensions } from 'react-native';
 
+const API_URL = "http://10.0.2.2:3003/";
 const ITEM_MARGIN = 18; // sum of left+right margin for one item
 const ITEM_WIDTH = (Dimensions.get('window').width - ITEM_MARGIN * 2) / 2;
 
 const ClinicListScreen = () => {
-	const navigation = useNavigation();
 	const [clinics, setClinics] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState(null);
+	const [searchText, setSearchText] = useState('');
+  const navigation = useNavigation();
+  const filteredClinics = clinics.filter(
+    clinic => clinic.name && clinic.name.toLowerCase().includes(searchText.toLowerCase())
+  );
 
 	useEffect(() => {
 		const fetchClinics = async () => {
@@ -44,7 +49,12 @@ const ClinicListScreen = () => {
 		>
 			<View style={styles.clinicCard}>
 				{/* Hiện chưa có ảnh */}
-				<Image style={styles.clinicImage}></Image>
+				<Image
+					source={{ 
+						uri: `${API_URL}${item.avatar}` || 'https://via.placeholder.com/100?text=Clinic' 
+					}} 
+					style={styles.clinicImage}>
+				</Image>
 				<Text style={styles.clinicName}>{item.name}</Text>
 			</View>
 		</TouchableOpacity>
@@ -80,18 +90,22 @@ const ClinicListScreen = () => {
 			<View style={styles.searchContainer}>
 				<Text style={styles.searchIcon}>🔍</Text>
 				<TextInput
-					style={styles.searchText}
-					placeholder="Tìm kiếm cơ sở y tế..."
-					returnKeyType="search"
+          style={styles.searchText}
+          placeholder="Tìm kiếm cơ sở y tế..."
+          value={searchText}
+          onChangeText={setSearchText}
+          returnKeyType="search"
+          autoCorrect={false}
+          autoCapitalize="none"
 				/>
 			</View>
 		</View>
 		<FlatList
-				data={clinics}
-				renderItem={renderClinicItem}
-				keyExtractor={(item) => item._id}
-				contentContainerStyle={styles.listContainer}
-				numColumns={2}
+			data={filteredClinics}
+			renderItem={renderClinicItem}
+			keyExtractor={(item) => item._id}
+			contentContainerStyle={styles.listContainer}
+			numColumns={2}
 		/>
 		</DefaultLayout>
 	);
@@ -137,17 +151,26 @@ const styles = StyleSheet.create({
 	clinicContainer: {
 		width: ITEM_WIDTH,
 		marginVertical: 5,
+		backgroundColor: '#fff', // Set background color to white
 		borderColor: '#ccc',
-		borderWidth: 1,
+    borderRadius: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.18,
+    shadowRadius: 1.0,
+    elevation: 1,
 	},
 	clinicCard: {
 		fontSize: 14,
 	},
 	clinicImage: {
-		width: '100%',
-		height: 100,
-		borderColor: '#ccc',
-		borderWidth: 1,
+		marginHorizontal: '5%',
+		width: '90%',
+		height: 160,
+		resizeMode: 'contain', // Ensures image covers the frame without warping
 	},
 	clinicName: {
 		padding: 7,
