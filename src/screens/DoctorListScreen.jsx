@@ -140,8 +140,8 @@ const styles = StyleSheet.create({
   doctorName: {
     fontWeight: '500',
     flex: 1,
-    paddingTop: 25,
-    paddingLeft: 15,
+    marginTop: 25,
+    marginLeft: 15,
   },
   doctorSpecialty: {
     color: '#666',

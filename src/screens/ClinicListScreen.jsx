@@ -101,11 +101,11 @@ const ClinicListScreen = () => {
 			</View>
 		</View>
 		<FlatList
-			data={filteredClinics}
-			renderItem={renderClinicItem}
-			keyExtractor={(item) => item._id}
-			contentContainerStyle={styles.listContainer}
-			numColumns={2}
+      data={filteredClinics}
+      renderItem={renderClinicItem}
+      keyExtractor={(item) => item._id}
+      contentContainerStyle={styles.listContainer}
+      numColumns={2}
 		/>
 		</DefaultLayout>
 	);
