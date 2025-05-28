@@ -10,7 +10,8 @@ import AppointmentScreen from "../screens/AppointmentScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import DoctorDetailScreen from "../screens/DoctorDetailScreen";
 import DoctorListScreen from "../screens/DoctorListScreen";
-
+import BookingScreen from "../screens/BookingScreen";
+import UserInfoScreen from "../screens/UserInfoScreen";
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
@@ -49,8 +50,23 @@ const AppNavigator = () => {
 
         {/* Main app */}
         <Stack.Screen name="MainApp" component={MainTabNavigator} />
+        <Stack.Screen name="Home" component={HomeScreen} />
+        <Stack.Screen name="Appointments" component={AppointmentScreen} />
+        <Stack.Screen name="Profile" component={ProfileScreen} />
+
+        {/* Doctor screens */}
         <Stack.Screen name="DoctorDetail" component={DoctorDetailScreen} />
         <Stack.Screen name="DoctorList" component={DoctorListScreen} />
+        <Stack.Screen
+          name="BookingScreen"
+          component={BookingScreen}
+          options={{ title: "Đặt lịch khám" }}
+        />
+        <Stack.Screen
+          name="UserInfo"
+          component={UserInfoScreen}
+          options={{ title: "Thông tin người dùng" }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
