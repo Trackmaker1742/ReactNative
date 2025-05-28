@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Dimensions } from 'react-native';
 
 const API_URL = "http://10.0.2.2:3003/";
-const ITEM_MARGIN = 18; // sum of left+right margin for one item
+const ITEM_MARGIN = 18;
 const ITEM_WIDTH = (Dimensions.get('window').width - ITEM_MARGIN * 2) / 2;
 
 const ClinicListScreen = () => {
@@ -48,7 +48,6 @@ const ClinicListScreen = () => {
 			onPress={() => navigation.navigate('ClinicDetail', { id: item._id, slug: item.slug })}
 		>
 			<View style={styles.clinicCard}>
-				{/* Hiện chưa có ảnh */}
 				<Image
 					source={{ 
 						uri: `${API_URL}${item.avatar}` || 'https://via.placeholder.com/100?text=Clinic' 
@@ -83,30 +82,30 @@ const ClinicListScreen = () => {
 
 	return (
 		<DefaultLayout>
-		<View style={styles.sectionContainer}>
-			<View style={styles.sectionHeaderContainer}>
-				<Text style={styles.sectionTitle}>Cơ sở y tế</Text>
+			<View style={styles.sectionContainer}>
+				<View style={styles.sectionHeaderContainer}>
+					<Text style={styles.sectionTitle}>Cơ sở y tế</Text>
+				</View>
+				<View style={styles.searchContainer}>
+					<Text style={styles.searchIcon}>🔍</Text>
+					<TextInput
+						style={styles.searchText}
+						placeholder="Tìm kiếm cơ sở y tế..."
+						value={searchText}
+						onChangeText={setSearchText}
+						returnKeyType="search"
+						autoCorrect={false}
+						autoCapitalize="none"
+					/>
+				</View>
 			</View>
-			<View style={styles.searchContainer}>
-				<Text style={styles.searchIcon}>🔍</Text>
-				<TextInput
-          style={styles.searchText}
-          placeholder="Tìm kiếm cơ sở y tế..."
-          value={searchText}
-          onChangeText={setSearchText}
-          returnKeyType="search"
-          autoCorrect={false}
-          autoCapitalize="none"
-				/>
-			</View>
-		</View>
-		<FlatList
-      data={filteredClinics}
-      renderItem={renderClinicItem}
-      keyExtractor={(item) => item._id}
-      contentContainerStyle={styles.listContainer}
-      numColumns={2}
-		/>
+			<FlatList
+				data={filteredClinics}
+				renderItem={renderClinicItem}
+				keyExtractor={(item) => item._id}
+				contentContainerStyle={styles.listContainer}
+				numColumns={2}
+			/>
 		</DefaultLayout>
 	);
 };
@@ -151,7 +150,7 @@ const styles = StyleSheet.create({
 	clinicContainer: {
 		width: ITEM_WIDTH,
 		marginVertical: 5,
-		backgroundColor: '#fff', // Set background color to white
+		backgroundColor: '#fff',
 		borderColor: '#ccc',
     borderRadius: 10,
     shadowColor: "#000",
@@ -170,10 +169,10 @@ const styles = StyleSheet.create({
 		marginHorizontal: '5%',
 		width: '90%',
 		height: 160,
-		resizeMode: 'contain', // Ensures image covers the frame without warping
+		resizeMode: 'contain',
 	},
 	clinicName: {
-		padding: 7,
+		margin: '5%',
 		color: '#333',
 	},
 	searchContainer: {

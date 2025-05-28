@@ -279,7 +279,7 @@ const HomeScreen = () => {
           <View style={styles.sectionContainer}>
             <View style={styles.sectionHeaderContainer}>
               <Text style={styles.sectionTitle}>Cơ sở y tế nổi bật</Text>
-              <TouchableOpacity onPress={() => navigation.navigate('ClinicListScreen')}>
+              <TouchableOpacity onPress={() => navigation.navigate('ClinicList')}>
                 <Text style={styles.viewMoreText}>Xem thêm</Text>
               </TouchableOpacity>
             </View>

@@ -12,6 +12,9 @@ import ProfileScreen from "../screens/ProfileScreen";
 import ClinicDetailScreen from "../screens/ClinicDetailScreen";
 import ClinicListScreen from "../screens/ClinicListScreen";
 
+import SpecialtyListScreen from "../screens/SpecialtyListScreen";
+import SpecialtyDetailScreen from "../screens/SpecialtyDetailScreen";
+
 import DoctorDetailScreen from "../screens/DoctorDetailScreen";
 import DoctorListScreen from "../screens/DoctorListScreen";
 
@@ -58,6 +61,10 @@ const AppNavigator = () => {
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Appointments" component={AppointmentScreen} />
         <Stack.Screen name="Profile" component={ProfileScreen} />
+
+        {/* Specialty screens */}
+        <Stack.Screen name="SpecialtyList" component={SpecialtyListScreen}/>
+        <Stack.Screen name="SpecialtyDetail" component={SpecialtyDetailScreen} />
 
         {/* Clinic screens */}
         <Stack.Screen name="ClinicDetail" component={ClinicDetailScreen} />

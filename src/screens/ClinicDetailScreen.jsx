@@ -122,7 +122,7 @@ const ClinicDetailScreen = ({ route }) => {
           </Text>
         </View>
       </View>
-      {/* Clinic map location */}
+      {/* Clinic description */}
       <View style={styles.clinicDetailContainer}>
         <ScrollView style={styles.clinicDetailScroll} showsVerticalScrollIndicator={true}>
           <RenderHTML
@@ -149,14 +149,12 @@ const ClinicDetailScreen = ({ route }) => {
         </ScrollView>
       </View>
       <Text style={styles.doctorListTitle}>Bác sĩ</Text>
-      <ScrollView>
-        <FlatList
-          data={doctors}
-          renderItem={renderDoctorItem}
-          keyExtractor={(item) => item._id}
-          contentContainerStyle={styles.listContainer}
-        />
-      </ScrollView>
+      <FlatList
+        data={doctors}
+        renderItem={renderDoctorItem}
+        keyExtractor={(item) => item._id}
+        contentContainerStyle={styles.listContainer}
+      />
 		</DefaultLayout>
 	);
 };
@@ -229,7 +227,7 @@ const styles = StyleSheet.create({
     shadowRadius: 1.0,
     elevation: 1,
     backgroundColor: '#fff',
-    overflow: 'hidden', // Ensures content stays inside
+    overflow: 'hidden',
   },
   clinicDetailScroll: {
     flex: 1,
